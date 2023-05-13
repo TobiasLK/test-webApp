@@ -127,7 +127,9 @@ if feedback:
 # ----- Scoring Parameter 1: Novelty Score (NS) ------
 
 # Opening the database file
-with open("C:/Users/tobia/Desktop/Maeva Code/feedback_data.txt", "r") as f:
+#with open("C:/Users/tobia/Desktop/Maeva Code/feedback_data.txt", "r") as f:
+# Website version
+with open("feedback_data.txt", "r") as f:
 #with open("feedback_data.txt", "r") as f:
     lines = f.readlines()
 
@@ -670,10 +672,3 @@ if st.button("Analyze your feedback on innovation ideas"):
 # Sometimes the first time you click the button, nothing shows up, 
 # but if you click the button again. Then it shows up straight away. 
 #
-
-import pkg_resources
-
-for package in pkg_resources.working_set:
-    print(package.key, package.version)
-
-
