@@ -29,8 +29,8 @@ from datetime import datetime
 import io
 
 # Load the pre-trained BERT model
-BERTmodel = BertForSequenceClassification.from_pretrained('bert-base-uncased')
-BERTtokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+#BERTmodel = BertForSequenceClassification.from_pretrained('bert-base-uncased')
+#BERTtokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
 
 # Downloads the relevant nltk assets
@@ -670,5 +670,10 @@ if st.button("Analyze your feedback on innovation ideas"):
 # Sometimes the first time you click the button, nothing shows up, 
 # but if you click the button again. Then it shows up straight away. 
 #
+
+import pkg_resources
+
+for package in pkg_resources.working_set:
+    print(package.key, package.version)
 
 
