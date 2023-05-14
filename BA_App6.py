@@ -46,7 +46,7 @@ subprocess.run([f"{sys.executable}", "-m", "nltk.downloader", "wordnet"], check=
 subprocess.run([f"{sys.executable}", "-m", "spacy", "download", "en_core_web_sm"], check=True)
 
 # Start the Streamlit app
-subprocess.run([f"{sys.executable}", "-m", "scoop", "BA_App6.py"], check=True)
+#subprocess.run([f"{sys.executable}", "-m", "scoop", "BA_App6.py"], check=True)
 
 
 
