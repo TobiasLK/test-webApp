@@ -33,20 +33,21 @@ import sys
 import subprocess
 
 # Install dependencies
-subprocess.call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
 
 # Download NLTK resources
-subprocess.call([sys.executable, "-m", "nltk.downloader", "punkt"])
-subprocess.call([sys.executable, "-m", "nltk.downloader", "averaged_perceptron_tagger"])
-subprocess.call([sys.executable, "-m", "nltk.downloader", "vader_lexicon"])
-subprocess.call([sys.executable, "-m", "nltk.downloader", "stopwords"])
-subprocess.call([sys.executable, "-m", "nltk.downloader", "wordnet"])
+subprocess.run([sys.executable, "-m", "nltk.downloader", "punkt"], check=True)
+subprocess.run([sys.executable, "-m", "nltk.downloader", "averaged_perceptron_tagger"], check=True)
+subprocess.run([sys.executable, "-m", "nltk.downloader", "vader_lexicon"], check=True)
+subprocess.run([sys.executable, "-m", "nltk.downloader", "stopwords"], check=True)
+subprocess.run([sys.executable, "-m", "nltk.downloader", "wordnet"], check=True)
 
 # Download Spacy model
-subprocess.call([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
+subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"], check=True)
 
 # Start the Streamlit app
-subprocess.call([sys.executable, "-m", "streamlit", "run", "BA_App6.py"])
+subprocess.run([sys.executable, "-m", "streamlit", "run", "app.py"], check=True)
+
 
 
 # Load the pre-trained BERT model
