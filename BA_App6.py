@@ -27,24 +27,27 @@ from transformers import BertForSequenceClassification, BertTokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from datetime import datetime
 import io
-#
+
+# Test
+import sys
 import subprocess
 
 # Install dependencies
-subprocess.call('pip install -r requirements.txt', shell=True)
+subprocess.call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
 
 # Download NLTK resources
-subprocess.call('python -m nltk.downloader punkt', shell=True)
-subprocess.call('python -m nltk.downloader averaged_perceptron_tagger', shell=True)
-subprocess.call('python -m nltk.downloader vader_lexicon', shell=True)
-subprocess.call('python -m nltk.downloader stopwords', shell=True)
-subprocess.call('python -m nltk.downloader wordnet', shell=True)
+subprocess.call([sys.executable, "-m", "nltk.downloader", "punkt"])
+subprocess.call([sys.executable, "-m", "nltk.downloader", "averaged_perceptron_tagger"])
+subprocess.call([sys.executable, "-m", "nltk.downloader", "vader_lexicon"])
+subprocess.call([sys.executable, "-m", "nltk.downloader", "stopwords"])
+subprocess.call([sys.executable, "-m", "nltk.downloader", "wordnet"])
 
 # Download Spacy model
-subprocess.call('python -m spacy download en_core_web_sm', shell=True)
+subprocess.call([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
 
 # Start the Streamlit app
-#subprocess.call('streamlit run app.py', shell=True)
+subprocess.call([sys.executable, "-m", "streamlit", "run", "BA_App6.py"])
+
 
 # Load the pre-trained BERT model
 #BERTmodel = BertForSequenceClassification.from_pretrained('bert-base-uncased')
