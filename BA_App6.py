@@ -44,7 +44,7 @@ subprocess.call('python -m nltk.downloader wordnet', shell=True)
 subprocess.call('python -m spacy download en_core_web_sm', shell=True)
 
 # Start the Streamlit app
-subprocess.call('streamlit run app.py', shell=True)
+#subprocess.call('streamlit run app.py', shell=True)
 
 # Load the pre-trained BERT model
 #BERTmodel = BertForSequenceClassification.from_pretrained('bert-base-uncased')
