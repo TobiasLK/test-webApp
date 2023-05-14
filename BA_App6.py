@@ -33,20 +33,21 @@ import sys
 import subprocess
 
 # Install dependencies
-subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
+subprocess.run([f"{sys.executable}", "-m", "pip", "install", "-r", "requirements.txt"], check=True)
 
 # Download NLTK resources
-subprocess.run([sys.executable, "-m", "nltk.downloader", "punkt"], check=True)
-subprocess.run([sys.executable, "-m", "nltk.downloader", "averaged_perceptron_tagger"], check=True)
-subprocess.run([sys.executable, "-m", "nltk.downloader", "vader_lexicon"], check=True)
-subprocess.run([sys.executable, "-m", "nltk.downloader", "stopwords"], check=True)
-subprocess.run([sys.executable, "-m", "nltk.downloader", "wordnet"], check=True)
+subprocess.run([f"{sys.executable}", "-m", "nltk.downloader", "punkt"], check=True)
+subprocess.run([f"{sys.executable}", "-m", "nltk.downloader", "averaged_perceptron_tagger"], check=True)
+subprocess.run([f"{sys.executable}", "-m", "nltk.downloader", "vader_lexicon"], check=True)
+subprocess.run([f"{sys.executable}", "-m", "nltk.downloader", "stopwords"], check=True)
+subprocess.run([f"{sys.executable}", "-m", "nltk.downloader", "wordnet"], check=True)
 
 # Download Spacy model
-subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"], check=True)
+subprocess.run([f"{sys.executable}", "-m", "spacy", "download", "en_core_web_sm"], check=True)
 
 # Start the Streamlit app
-subprocess.run([sys.executable, "-m", "streamlit", "run", "app.py"], check=True)
+subprocess.run([f"{sys.executable}", "-m", "scoop", "run.py"], check=True)
+
 
 
 
