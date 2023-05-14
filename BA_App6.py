@@ -27,6 +27,24 @@ from transformers import BertForSequenceClassification, BertTokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from datetime import datetime
 import io
+#
+import subprocess
+
+# Install dependencies
+subprocess.call('pip install -r requirements.txt', shell=True)
+
+# Download NLTK resources
+subprocess.call('python -m nltk.downloader punkt', shell=True)
+subprocess.call('python -m nltk.downloader averaged_perceptron_tagger', shell=True)
+subprocess.call('python -m nltk.downloader vader_lexicon', shell=True)
+subprocess.call('python -m nltk.downloader stopwords', shell=True)
+subprocess.call('python -m nltk.downloader wordnet', shell=True)
+
+# Download Spacy model
+subprocess.call('python -m spacy download en_core_web_sm', shell=True)
+
+# Start the Streamlit app
+subprocess.call('streamlit run app.py', shell=True)
 
 # Load the pre-trained BERT model
 #BERTmodel = BertForSequenceClassification.from_pretrained('bert-base-uncased')
@@ -56,54 +74,53 @@ st.set_page_config(
     page_icon="📝",
     layout="wide")
 
-# Adding a background image to the WebApp
-'''
- def add_bg_from_local(image_file):
-    with open("Background.jpg", "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read())
-    st.markdown(
-        f"""
-    <style>
-    .stApp {{
-        background-image: url(data:image/{"png"};base64,{encoded_string.decode()});
-        background-size: cover
-    }}
-    </style>
-    """,
-        unsafe_allow_html=True
-    )
-
- add_bg_from_local('Background.jpg')
-'''
-
 
 # ---------------------------------------------------#
 #           HEADER SECTION                           #
 # ---------------------------------------------------#
 
 
-# Setting a title for the webpage
-st.title("Feedback Analysis Tool")
 
-# Text under title
-st.write("""
-         📝 This application is a Streamlit dashboard that can be used to
-         **analyze** and **improve** feedbacks on innovation ideas in a company📝
-         """)
+# Set page width and center-align content
+st.markdown(
+    """
+    <style>
+    .stApp {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# Making a textbox where users can enter the innovation idea
+# Set page title and description using HTML tags
+st.markdown(
+    """
+    <h1 style='text-align: center; color: #8B008B;'>Feedback Analysis Tool</h1>
+    <p style='text-align: center; font-size: 18px; margin-bottom: 24px;'>
+        📝 This application is a Streamlit dashboard that can be used to
+        <strong>analyze</strong> and <strong>improve</strong> feedbacks on innovation ideas in a company 📝
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
+# Add a section for innovation idea
 st.header("Please insert your innovation idea here")
 
-idea = st.text_area("Enter text here: ")
-submission_date = st.date_input("Enter idea submission date here: ")
-st.write("You entered:", idea, " date:", submission_date)
+idea = st.text_area("Enter text here:", height=200, key="idea-input")
+submission_date = st.date_input("Enter idea submission date here:", key="submission-date")
+st.write("You entered:", idea, "date:", submission_date)
 
-# Making a textbox where users can enter their feedbacks on the innovation idea
-st.header("Please insert your feedback on innovation idea here")
+# Add a section for feedback
+st.header("Please insert your feedback on the innovation idea here")
 
-feedback = st.text_area("Enter text here:")
-feedback_date = st.date_input("Enter feedback submission date here:")
-st.write("You entered:", feedback, " date:", feedback_date)
+feedback = st.text_area("Enter text here:", height=200, key="feedback-input")
+feedback_date = st.date_input("Enter feedback submission date here:", key="feedback-date")
+st.write("You entered:", feedback, "date:", feedback_date)
+
+
 
 # ----- PRE-PROCESSING TEXT --------------------------------
 
@@ -459,51 +476,51 @@ def overall_feedback_score(feedback, w_LS, w_SS, w_RS, w_NS, w_IQS, w_PSS, w_CS,
 # ----- Feedback Generation -----
 
 def generate_feedback(ns, ws, rs, ss, cs, ts, pss, cbs, css, ls, sns, ofs):
-    feedback_text = ""
+    feedback_text = []
 
     if ns < 0.2:
-        feedback_text += "Your idea is not very original. Consider exploring more unique and creative ideas. "
+        feedback_text.append("Your idea is not very original. Consider exploring more unique and creative ideas. ")
 
     if ws < 0.5:
-        feedback_text += "Your idea needs more work to make it practical and feasible. Consider refining it further. "
+        feedback_text.append("Your idea needs more work to make it practical and feasible. Consider refining it further. ")
 
     if rs < 0.5:
-        feedback_text += "Your idea may not be relevant to the task or problem at hand. Consider re-evaluating your approach. "
+        feedback_text.append("Your idea may not be relevant to the task or problem at hand. Consider re-evaluating your approach. ")
 
     if ss < 0.5:
-        feedback_text += "Your idea lacks specificity and detail. Consider adding more information to make it more concrete. "
+        feedback_text.append("Your idea lacks specificity and detail. Consider adding more information to make it more concrete. ")
 
     if cs < 0.5:
-        feedback_text += "Your idea is not very clear or easy to understand. Consider simplifying your language and structure. "
+        feedback_text.append("Your idea is not very clear or easy to understand. Consider simplifying your language and structure. ")
 
     if ts < 0.5:
-        feedback_text += "Your idea may not be timely or relevant to the current situation. Consider addressing more urgent needs. "
+        feedback_text.append("Your idea may not be timely or relevant to the current situation. Consider addressing more urgent needs. ")
 
     if pss == 0:
-        feedback_text += "Your idea may benefit from more problem-solving keywords. Consider using language related to solving problems, troubleshooting, or debugging. "
+        feedback_text.append("Your idea may benefit from more problem-solving keywords. Consider using language related to solving problems, troubleshooting, or debugging. ")
 
     if cbs < 0.5:
-        feedback_text += "Your idea could benefit from more collaboration. Consider seeking out input and feedback from others to refine your approach. "
+        feedback_text.append("Your idea could benefit from more collaboration. Consider seeking out input and feedback from others to refine your approach. ")
 
     if css < 0.5:
-        feedback_text += "Your idea may benefit from more input from a larger crowd. Consider reaching out to more people for feedback and suggestions. "
+        feedback_text.append("Your idea may benefit from more input from a larger crowd. Consider reaching out to more people for feedback and suggestions. ")
 
     if ls == 0:
-        feedback_text += "Your idea may be too short or too long. Consider refining your idea to fit within the recommended length. "
+        feedback_text.append("Your idea may be too short or too long. Consider refining your idea to fit within the recommended length. ")
 
     if sns < 0:
-        feedback_text += "Your idea may come across as negative or unenthusiastic. Consider using more positive and engaging language. "
+        feedback_text.append("Your idea may come across as negative or unenthusiastic. Consider using more positive and engaging language. ")
 
     if ofs < 0.5:
-        feedback_text += "Overall, your idea could benefit from more refinement and improvement. Consider incorporating the above feedback to take your idea to the next level. "
+        feedback_text.append("Overall, your idea could benefit from more refinement and improvement. Consider incorporating the above feedback to take your idea to the next level. ")
     elif ofs < 0.7:
-        feedback_text += "Overall, your idea is decent but could benefit from some additional work. Consider incorporating some of the above feedback to make it stronger. "
+        feedback_text.append("Overall, your idea is decent but could benefit from some additional work. Consider incorporating some of the above feedback to make it stronger. ")
     elif ofs < 0.9:
-        feedback_text += "Overall, your idea is strong and well-developed. Consider incorporating some of the above feedback to take it to the next level. "
+        feedback_text.append("Overall, your idea is strong and well-developed. Consider incorporating some of the above feedback to take it to the next level. ")
     else:
-        feedback_text += "Overall, your idea is exceptional and well-developed. Great work! "
-#
-    # Generate more detailed feedback using BERT
+        feedback_text.append("Overall, your idea is exceptional and well-developed. Great work! ")
+
+# Generate more detailed feedback using BERT
 #    inputs = BERTtokenizer.encode_plus(
 #        feedback_text,
 #        add_special_tokens=True,
@@ -515,9 +532,10 @@ def generate_feedback(ns, ws, rs, ss, cs, ts, pss, cbs, css, ls, sns, ofs):
 #    logits = outputs[0]
 #    probabilities = logits.softmax(dim=1)
 #    sentiment = 'positive' if probabilities[0][1] > probabilities[0][0] else 'negative'
-#    feedback_text += f' The sentiment of this feedback is {sentiment}.'
-#
-#    return feedback_text
+#    feedback_text.append(f' The sentiment of this feedback is {sentiment}.')
+    
+
+    return feedback_text
 
 
 if st.button("Analyze your feedback on innovation ideas"):
@@ -536,53 +554,9 @@ if st.button("Analyze your feedback on innovation ideas"):
     ofs = overall_feedback_score(feedback, w_LS, w_SS, w_RS, w_NS, w_IQS, w_PSS, w_CS, w_CSS)
 
     # Display the feedback scores
-    st.write("Novelty score: ", ns)
-    st.write("Workability score: ", ws)
-    st.write("Relevance score: ", rs)
-    st.write("Specificity score: ", ss)
-    st.write("Clarity score: ", cs)
-    st.write("Timeliness score: ", ts)
-    st.write("Problem solving score: ", pss)
-    st.write("Collaboration score: ", cbs)
-    st.write("Crowdsourcing score: ", css)
-    st.write("Length score: ", ls)
-    st.write("Sentiment score: ", sns)
-    st.write("Overall Feedback score: ", ofs)
-    st.write("Feedback suggestion: ", generate_feedback(ns, ws, rs, ss, cs, ts, pss, cbs, css, ls, sns, ofs))
-
-    # ----- Plotting the results and making a jpg file of it -----
-
-    # Define the scores as a dictionary
-    scores = {"Novelty": ns, "Workability": ws, "Relevance": rs, "Specificity": ss, "Clarity": cs}
-
-    # Create a bar chart of the scores
-    plt.bar(scores.keys(), scores.values())
-
-    # Set the title and labels for the chart
-    plt.title("Feedback Analysis")
-    plt.xlabel("Score Type")
-    plt.ylabel("Score")
-
-    # Save the chart to a file
-    plt.savefig("feedback_analysis.png")
-
-    # Read the file as bytes
-    with open("feedback_analysis.png", "rb") as f:
-        bytes_data = f.read()
-
-    # Encode the bytes as base64
-    b64_data = base64.b64encode(bytes_data).decode()
-
-    # Create a download button
-    st.download_button(
-        label="Download Feedback Analysis",
-        data=b64_data,
-        file_name="feedback_analysis.png",
-        mime="image/png"
-    )
-
-
-
+    st.write("Feedback Suggestions:")
+    for line in generate_feedback(ns, ws, rs, ss, cs, ts, pss, cbs, css, ls, sns, ofs):
+        st.write(line)
 
 
     def create_table(data):
